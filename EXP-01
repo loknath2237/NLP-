@@ -1,0 +1,24 @@
+import re
+
+text = "My email id is example123@gmail.com and my phone number is 9876543210."
+
+email_pattern = r'\w+@\w+\.\w+'
+email = re.search(email_pattern, text)
+
+if email:
+    print("Email found:", email.group())
+else:
+    print("No email found")
+
+start_pattern = r'My'
+match_result = re.match(start_pattern, text)
+
+if match_result:
+    print("Text starts with 'My'")
+else:
+    print("Text does not start with 'My'")
+
+number_pattern = r'\d+'
+numbers = re.findall(number_pattern, text)
+
+print("Numbers found:", numbers)
