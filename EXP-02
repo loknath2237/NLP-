@@ -1,0 +1,31 @@
+def fsa_ends_with_ab(string):
+    state = "q0"   # Start state
+
+    for ch in string:
+        if state == "q0":
+            if ch == "a":
+                state = "q1"
+            else:
+                state = "q0"
+
+        elif state == "q1":
+            if ch == "b":
+                state = "q2"
+            else:
+                state = "q1"
+
+        elif state == "q2":
+            if ch == "a":
+                state = "q1"
+            else:
+                state = "q0"
+
+    if state == "q2":
+        return "Accepted"
+    else:
+        return "Rejected"
+
+test_strings = ["ab", "cab", "aab", "aba", "abc"]
+
+for s in test_strings:
+    print(s, "->", fsa_ends_with_ab(s))
