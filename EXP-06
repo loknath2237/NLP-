@@ -1,0 +1,26 @@
+import random
+from collections import defaultdict
+
+text = "I like NLP and I like Python"
+
+words = text.split()
+
+bigram_model = defaultdict(list)
+
+for i in range(len(words) - 1):
+    bigram_model[words[i]].append(words[i + 1])
+
+def generate_text(start_word, length=10):
+    current_word = start_word
+    result = [current_word]
+
+    for _ in range(length - 1):
+        next_words = bigram_model.get(current_word)
+        if not next_words:
+            break
+        current_word = random.choice(next_words)
+        result.append(current_word)
+
+    return " ".join(result)
+
+print(generate_text("I", 8))
