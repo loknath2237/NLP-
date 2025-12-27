@@ -1,0 +1,26 @@
+def plural_fsm(noun):
+    state = "q0"
+
+    vowels = "aeiou"
+
+    state = "q1"
+
+    if noun.endswith(("s", "x", "z", "ch", "sh")):
+        state = "q3"
+        plural = noun + "es"
+
+    elif noun.endswith("y") and noun[-2] not in vowels:
+        state = "q4"
+        plural = noun[:-1] + "ies"
+
+    else:
+        state = "q2"
+        plural = noun + "s"
+
+    state = "qf"
+    return plural
+
+nouns = ["cat", "dog", "bus", "box", "city", "baby", "boy"]
+
+for n in nouns:
+    print(n, "→", plural_fsm(n))
