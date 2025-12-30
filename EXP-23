@@ -1,0 +1,35 @@
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+
+# Download required resource (run once)
+nltk.download('punkt')
+
+def jaccard_similarity(sent1, sent2):
+    words1 = set(word_tokenize(sent1.lower()))
+    words2 = set(word_tokenize(sent2.lower()))
+
+    if not words1 or not words2:
+        return 0.0
+
+    intersection = words1.intersection(words2)
+    union = words1.union(words2)
+
+    return len(intersection) / len(union)
+
+
+def coherence_score(text):
+    sentences = sent_tokenize(text)
+
+    if len(sentences) < 2:
+        return 1.0
+
+    score = 0.0
+
+    for i in range(len(sentences) - 1):
+        score += jaccard_similarity(sentences[i], sentences[i + 1])
+
+    return score / (len(sentences) - 1)
+
+
+text = "The cat sat on the mat. It was very comfortable. The weather is sunny."
+print(coherence_score(text))
