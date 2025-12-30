@@ -1,0 +1,31 @@
+import nltk
+from nltk import pos_tag, word_tokenize
+from nltk.chunk import RegexpParser
+
+# Download required resources (run once)
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+
+def extract_noun_phrases(sentence):
+    tokens = word_tokenize(sentence)
+    pos_tags = pos_tag(tokens)
+
+    # Grammar for noun phrases
+    grammar = r"""
+        NP: {<DT>?<JJ.*>*<NN.*>+}
+    """
+
+    chunk_parser = RegexpParser(grammar)
+    tree = chunk_parser.parse(pos_tags)
+
+    noun_phrases = []
+
+    for subtree in tree.subtrees(filter=lambda t: t.label() == 'NP'):
+        np_text = " ".join(word for word, tag in subtree.leaves())
+        noun_phrases.append(np_text)
+
+    return noun_phrases
+
+
+sentence = "The intelligent student solved the complex problem."
+print(extract_noun_phrases(sentence))
