@@ -1,0 +1,32 @@
+import nltk
+from nltk import word_tokenize, pos_tag
+
+# Download required resources (run once)
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+
+def resolve_references(text):
+    tokens = word_tokenize(text)
+    pos_tags = pos_tag(tokens)
+
+    last_noun = None
+    resolved = []
+
+    for word, tag in pos_tags:
+        # Proper noun or noun
+        if tag in ("NN", "NNS", "NNP", "NNPS"):
+            last_noun = word
+            resolved.append(word)
+
+        # Pronoun
+        elif tag in ("PRP", "PRP$") and last_noun:
+            resolved.append(f"{word}({last_noun})")
+
+        else:
+            resolved.append(word)
+
+    return " ".join(resolved)
+
+
+text = "John bought a car. He loves it."
+print(resolve_references(text))
